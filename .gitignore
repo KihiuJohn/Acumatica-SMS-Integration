@@ -47,6 +47,7 @@ desktop.ini
 *.sqlite
 
 *.dll
+*.pdb
 *.exe
 
 # Ignore large Copilot indices
