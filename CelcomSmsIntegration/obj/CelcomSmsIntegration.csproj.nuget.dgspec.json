@@ -1,0 +1,78 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Program Files\\Acumatica ERP\\DarlingHair\\App_Data\\Projects\\CelcomSmsIntegration\\CelcomSmsIntegration\\CelcomSmsIntegration.csproj": {}
+  },
+  "projects": {
+    "C:\\Program Files\\Acumatica ERP\\DarlingHair\\App_Data\\Projects\\CelcomSmsIntegration\\CelcomSmsIntegration\\CelcomSmsIntegration.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Program Files\\Acumatica ERP\\DarlingHair\\App_Data\\Projects\\CelcomSmsIntegration\\CelcomSmsIntegration\\CelcomSmsIntegration.csproj",
+        "projectName": "CelcomSmsIntegration",
+        "projectPath": "C:\\Program Files\\Acumatica ERP\\DarlingHair\\App_Data\\Projects\\CelcomSmsIntegration\\CelcomSmsIntegration\\CelcomSmsIntegration.csproj",
+        "packagesPath": "C:\\Users\\Tact\\.nuget\\packages\\",
+        "outputPath": "C:\\Program Files\\Acumatica ERP\\DarlingHair\\App_Data\\Projects\\CelcomSmsIntegration\\CelcomSmsIntegration\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "UsingMicrosoftNETSdk": false,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Tact\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "Microsoft.Bcl.AsyncInterfaces": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "System.Runtime.CompilerServices.Unsafe": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
