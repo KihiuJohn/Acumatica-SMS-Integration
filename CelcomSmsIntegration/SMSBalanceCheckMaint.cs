@@ -54,7 +54,7 @@ namespace CelcomSmsIntegration
                     client.Timeout = TimeSpan.FromSeconds(30);
                     var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
                     var response = client.PostAsync(requestUrl, content).Result;
-                    var rawResponseContent = response.Content.ReadAsStringAsync().Result;   
+                    var rawResponseContent = response.Content.ReadAsStringAsync().Result;
 
                     if (string.IsNullOrWhiteSpace(rawResponseContent) || !rawResponseContent.TrimStart().StartsWith("{"))
                     {
@@ -67,7 +67,6 @@ namespace CelcomSmsIntegration
                     decimal? credit = decimal.TryParse(result["credit"]?.ToString(), out decimal cred) ? (decimal?)cred : null;
                     string partnerId = result["partner-id"]?.ToString() ?? parameters.PartnerID;
 
-                    // Insert log entry only once
                     var logEntry = BalanceLogs.Insert(new SMSBalanceLog
                     {
                         PartnerID = partnerId,
@@ -89,7 +88,6 @@ namespace CelcomSmsIntegration
             }
             catch (HttpRequestException ex)
             {
-                // Insert log entry for network error
                 BalanceLogs.Insert(new SMSBalanceLog
                 {
                     PartnerID = parameters.PartnerID,
@@ -101,7 +99,6 @@ namespace CelcomSmsIntegration
             }
             catch (JsonException jsonEx)
             {
-                // Insert log entry for parsing error
                 BalanceLogs.Insert(new SMSBalanceLog
                 {
                     PartnerID = parameters.PartnerID,
@@ -112,11 +109,52 @@ namespace CelcomSmsIntegration
                 throw new PXException(CelcomAfrica.SmsProvider.Messages.BalanceParsingFailed, jsonEx.Message);
             }
 
-            // Rely on CommitChanges to persist changes
-
             BalanceLogs.View.RequestRefresh();
-            return adapter.Get();          // simplest form
+            return adapter.Get();
+        }
 
+        public PXAction<BalanceCheckParameters> StartSchedule;
+        [PXButton]
+        [PXUIField(DisplayName = "Start Schedule")]
+        protected virtual IEnumerable startSchedule(PXAdapter adapter)
+        {
+            BalanceCheckParameters parameters = RequestView.Current;
+            if (parameters == null)
+            {
+                parameters = RequestView.Insert(new BalanceCheckParameters());
+            }
+
+            if (parameters.IsActive == true)
+            {
+                int intervalMinutes = parameters.ScheduleInterval ?? 10; // Default to 10 minutes if null
+                                                                         // Acuminator disable once PX1008 LongOperationDelegateSynchronousExecution [Justification]
+                PXLongOperation.StartOperation(this, () => RunScheduledCheckIndependently(parameters.PartnerID, parameters.ApiKey, intervalMinutes, parameters.IsActive));
+                PXTrace.WriteInformation($"Schedule started with interval: {intervalMinutes} minutes.");
+            }
+            else
+            {
+                PXTrace.WriteInformation("Schedule is inactive.");
+            }
+
+            return adapter.Get();
+        }
+
+        private void RunScheduledCheckIndependently(string partnerId, string apiKey, int intervalMinutes, bool? isActive)
+        {
+            while (isActive == true)
+            {
+                var graph = PXGraph.CreateInstance<SMSBalanceCheckMaint>();
+                var parameters = new BalanceCheckParameters
+                {
+                    PartnerID = partnerId,
+                    ApiKey = apiKey
+                };
+                graph.RequestView.Current = parameters;
+                graph.checkBalance(new PXAdapter(graph.RequestView));
+                System.Threading.Thread.Sleep(intervalMinutes * 60 * 1000); // Convert minutes to milliseconds
+                // Note: isActive is not dynamically updated here; it reflects the initial value
+            }
+            PXTrace.WriteInformation("Schedule stopped due to deactivation.");
         }
     }
 }

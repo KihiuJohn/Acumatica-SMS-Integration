@@ -33,5 +33,22 @@ namespace CelcomAfrica.SmsProvider
         public virtual string ApiKey { get; set; }
         public abstract class apiKey : PX.Data.BQL.BqlString.Field<apiKey> { }
         #endregion
+
+        #region ScheduleInterval
+        [PXDBInt()]
+        [PXUIField(DisplayName = "Schedule Interval")]
+        [PXIntList(new int[] { 5, 10, 30, 60 }, new string[] { "5 Minutes", "10 Minutes", "30 Minutes", "1 Hour" })]
+        [PXDefault(10, PersistingCheck = PXPersistingCheck.Nothing)]
+        public virtual int? ScheduleInterval { get; set; }
+        public abstract class scheduleInterval : PX.Data.BQL.BqlInt.Field<scheduleInterval> { }
+        #endregion
+
+        #region IsActive
+        [PXDBBool()]
+        [PXUIField(DisplayName = "Active")]
+        [PXDefault(false, PersistingCheck = PXPersistingCheck.Nothing)]
+        public virtual bool? IsActive { get; set; }
+        public abstract class isActive : PX.Data.BQL.BqlBool.Field<isActive> { }
+        #endregion
     }
 }

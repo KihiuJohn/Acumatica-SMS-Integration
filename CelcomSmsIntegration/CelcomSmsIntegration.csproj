@@ -71,7 +71,6 @@
     <Compile Include="SMSBalanceLog.cs" />
     <Compile Include="SMSLog.cs" />
     <Compile Include="SMSBalanceCheckMaint.cs" />
-<Compile Include="SMSBalanceCheckProcess.cs" />
 <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
